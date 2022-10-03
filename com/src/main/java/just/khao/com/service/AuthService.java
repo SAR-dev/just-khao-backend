@@ -37,7 +37,7 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Optional<AuthEntity> findByUsernameOrEmail(String username, String email){
+    public AuthEntity findByUsernameOrEmail(String username, String email){
         return authRepository.findByUsernameOrEmail(username, email);
     }
 
@@ -70,17 +70,17 @@ public class AuthService {
         return Timestamp.from(Instant.now());
     }
 
-    public TokenModel updateToken(Optional<AuthEntity> authEntity){
+    public TokenModel getNewToken(AuthEntity authEntity){
         IssueTokenModel issueTokenModel = new IssueTokenModel();
         TokenModel tokenModel = new TokenModel();
 
-        issueTokenModel.setId(authEntity.get().getId());
+        issueTokenModel.setId(authEntity.getId());
         issueTokenModel.setRefresh_token(getRefreshToken());
         issueTokenModel.setRefreshed_at(getRefreshedAt());
 
         authRepository.updateToken(issueTokenModel);
 
-        tokenModel.setAccess_token(getAccessToken(authEntity.get().getEmail()));
+        tokenModel.setAccess_token(getAccessToken(authEntity.getEmail()));
         tokenModel.setRefresh_token(issueTokenModel.getRefresh_token());
         return  tokenModel;
     }

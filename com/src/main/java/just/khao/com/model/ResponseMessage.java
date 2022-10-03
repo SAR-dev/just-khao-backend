@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class ResponseMessage {
-    private Integer status;
-    private String message;
+    private Integer status = 200;
+    private String message = "OK";
+    private Object data;
 }

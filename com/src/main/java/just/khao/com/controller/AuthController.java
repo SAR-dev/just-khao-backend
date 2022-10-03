@@ -4,12 +4,10 @@ import just.khao.com.entity.AuthEntity;
 import just.khao.com.model.ResponseMessage;
 import just.khao.com.model.SigninModel;
 import just.khao.com.model.SignupModel;
-import just.khao.com.model.TokenModel;
 import just.khao.com.service.AuthService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.security.sasl.AuthenticationException;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
@@ -33,25 +31,32 @@ public class AuthController {
             responseMessage.setStatus(200);
             responseMessage.setMessage("User Created");
         } catch(Exception e){
-            responseMessage.setStatus(403);
+            responseMessage.setStatus(500);
             responseMessage.setMessage("Follow the guidelines for creating account!");
         }
         return responseMessage;
     }
 
     @PostMapping("/sign-in")
-    public TokenModel SignIn(@RequestBody SigninModel signinModel) throws AuthenticationException {
-        Optional<AuthEntity> authEntity = authService.findByUsernameOrEmail(signinModel.getUsername(), signinModel.getEmail());
-        Boolean isAuthenticated;
-        if(!authEntity.isEmpty()){
-            isAuthenticated = authService.checkPassword(signinModel.getPassword(), authEntity.get().getHashed_password());
-        } else {
-            isAuthenticated = false;
+    public ResponseMessage SignIn(@RequestBody SigninModel signinModel) {
+        AuthEntity authEntity = authService.findByUsernameOrEmail(
+                signinModel.getUsername(),
+                signinModel.getEmail()
+        );
+        Boolean isAuthenticated = false;
+        ResponseMessage responseMessage = new ResponseMessage();
+        if(authEntity != null){
+            isAuthenticated = authService.checkPassword(
+                    signinModel.getPassword(),
+                    authEntity.getHashed_password()
+            );
         }
         if(isAuthenticated){
-            return authService.updateToken(authEntity);
+            responseMessage.setData(authService.getNewToken(authEntity));
         } else {
-            throw new AuthenticationException("Password doesn't match!");
+            responseMessage.setStatus(500);
+            responseMessage.setMessage("Password doesn't match!");
         }
+        return responseMessage;
     }
 }

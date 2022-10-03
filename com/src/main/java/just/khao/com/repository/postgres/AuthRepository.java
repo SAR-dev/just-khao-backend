@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Mapper
 public interface AuthRepository {
-    Optional<AuthEntity> findByUsernameOrEmail(String username, String email);
+    AuthEntity findByUsernameOrEmail(String username, String email);
 
     void createAuth(SignupModel signupModel);
 

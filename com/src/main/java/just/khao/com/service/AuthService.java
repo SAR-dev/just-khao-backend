@@ -9,8 +9,10 @@ import just.khao.com.model.TokenModel;
 import just.khao.com.repository.postgres.AuthRepository;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -19,6 +21,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class AuthService {
     @Value("${jwt.accesstoken.expirationtime}")
     long accessTokenExpTime;
@@ -32,7 +35,7 @@ public class AuthService {
     private final AuthRepository authRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthService(AuthRepository authRepository, PasswordEncoder passwordEncoder) {
+    public AuthService(AuthRepository authRepository, @Lazy PasswordEncoder passwordEncoder) {
         this.authRepository = authRepository;
         this.passwordEncoder = passwordEncoder;
     }

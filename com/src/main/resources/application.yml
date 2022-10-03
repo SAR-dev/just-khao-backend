@@ -19,6 +19,18 @@ spring:
         auto-commit: false
         minimum-idle: 10
         maximum-pool-size: 10
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 554989149730-vqbq1bsh6pviulc7i1agqvta2ssin71r.apps.googleusercontent.com
+            client-secret: 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
+            scope: openid,profile,email
+      resourceserver:
+        jwt:
+          issuer-uri: https://accounts.google.com
+          jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
 mybatis:
   configuration:
     map-underscore-to-camel-case: true

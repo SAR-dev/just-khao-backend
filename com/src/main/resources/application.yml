@@ -12,7 +12,7 @@ spring:
         database: movie-graph
     postgres:
       hikari:
-        jdbc-url: jdbc:postgresql://localhost:5432/just-khao?currentSchema=public
+        jdbc-url: jdbc:postgresql://localhost:5432/justkhao?currentSchema=public
         username: postgres
         password: admin
         driver-class-name: org.postgresql.Driver

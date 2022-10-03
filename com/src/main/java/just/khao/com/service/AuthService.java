@@ -1,6 +1,7 @@
 package just.khao.com.service;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import just.khao.com.entity.AuthEntity;
 import just.khao.com.model.IssueTokenModel;
@@ -8,6 +9,7 @@ import just.khao.com.model.SignupModel;
 import just.khao.com.model.TokenModel;
 import just.khao.com.repository.postgres.AuthRepository;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,7 +20,6 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -49,7 +50,7 @@ public class AuthService {
         authRepository.createAuth(signupModel);
     }
 
-    public Boolean checkPassword(String password, String hashed_password){
+    public Boolean verifyPassword(String password, String hashed_password){
         Boolean matched = passwordEncoder.matches(password, hashed_password);
         return matched;
     }
@@ -84,7 +85,26 @@ public class AuthService {
         authRepository.updateToken(issueTokenModel);
 
         tokenModel.setAccess_token(getAccessToken(authEntity.getEmail()));
-        tokenModel.setRefresh_token(issueTokenModel.getRefresh_token());
+        tokenModel.setRefresh_token(passwordEncoder.encode(issueTokenModel.getRefresh_token()));
         return  tokenModel;
+    }
+
+    public boolean verifyRefreshToken(TokenModel tokenModel, AuthEntity authEntity){
+        Boolean hasOldToken = (authEntity.getRefreshed_at() != null && StringUtils.isNotEmpty(authEntity.getRefresh_token()));
+        Boolean hasValidity = authEntity.getRefreshed_at().plus(refreshTokenExpTime, ChronoUnit.SECONDS).isAfter(Instant.now());
+        Boolean isValid = passwordEncoder.matches(authEntity.getRefresh_token(), tokenModel.getRefresh_token());
+        return (hasOldToken && hasValidity && isValid);
+    }
+
+    public TokenModel reIssueToken(TokenModel tokenModel){
+        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(accessTokenSecret)).build();
+        String email = verifier.verify(tokenModel.getAccess_token()).getSubject();
+        AuthEntity authEntity = findByUsernameOrEmail("", email);
+
+        TokenModel newToken = new TokenModel();
+        if(verifyRefreshToken(tokenModel ,authEntity)){
+            newToken = getNewToken(authEntity);
+        };
+        return newToken;
     }
 }

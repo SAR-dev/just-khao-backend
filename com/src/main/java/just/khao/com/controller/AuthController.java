@@ -1,12 +1,14 @@
 package just.khao.com.controller;
 
 import just.khao.com.entity.AuthEntity;
+import just.khao.com.model.ResponseMessage;
 import just.khao.com.model.SigninModel;
 import just.khao.com.model.SignupModel;
+import just.khao.com.model.TokenModel;
 import just.khao.com.service.AuthService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.security.sasl.AuthenticationException;
 import java.util.Optional;
 
 @RestController
@@ -24,17 +26,21 @@ public class AuthController {
     }
 
     @PostMapping("/sign-up")
-    public ResponseEntity<String> SignUp(@RequestBody SignupModel signupModel){
+    public ResponseMessage SignUp(@RequestBody SignupModel signupModel){
+        ResponseMessage responseMessage = new ResponseMessage();
         try{
             authService.createAuth(signupModel);
-            return ResponseEntity.ok().body("User Created");
+            responseMessage.setStatus(200);
+            responseMessage.setMessage("User Created");
         } catch(Exception e){
-            return ResponseEntity.badRequest().body("Follow the guidelines for creating account!");
+            responseMessage.setStatus(403);
+            responseMessage.setMessage("Follow the guidelines for creating account!");
         }
+        return responseMessage;
     }
 
     @PostMapping("/sign-in")
-    public Boolean SignIn(@RequestBody SigninModel signinModel){
+    public TokenModel SignIn(@RequestBody SigninModel signinModel) throws AuthenticationException {
         Optional<AuthEntity> authEntity = authService.findByUsernameOrEmail(signinModel.getUsername(), signinModel.getEmail());
         Boolean isAuthenticated;
         if(!authEntity.isEmpty()){
@@ -42,6 +48,10 @@ public class AuthController {
         } else {
             isAuthenticated = false;
         }
-        return isAuthenticated;
+        if(isAuthenticated){
+            return authService.updateToken(authEntity);
+        } else {
+            throw new AuthenticationException("Password doesn't match!");
+        }
     }
 }

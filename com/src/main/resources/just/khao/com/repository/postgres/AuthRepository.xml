@@ -8,6 +8,15 @@
     </select>
 
     <insert id="createAuth">
-        INSERT INTO auth (username, email, hashed_password) VALUES (#{username,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{hashed_password})
+        INSERT INTO auth
+        (username, email, hashed_password)
+        VALUES
+        (#{username,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{hashed_password, jdbcType=VARCHAR})
     </insert>
+
+    <update id="updateToken">
+        UPDATE auth
+        SET refresh_token = #{refresh_token, jdbcType=VARCHAR}, refreshed_at = #{refreshed_at, jdbcType=TIMESTAMP}
+        WHERE id = #{id, jdbcType=INTEGER}
+    </update>
 </mapper>

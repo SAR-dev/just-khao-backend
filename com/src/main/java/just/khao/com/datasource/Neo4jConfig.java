@@ -16,7 +16,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @MapperScan(
-        basePackages = {"com.formalhaut.fmh.repository.neo4j"},
+        basePackages = {"just.khao.com.repository.neo4j"},
         sqlSessionFactoryRef = "neo4jSqlSessionFactory")
 public class Neo4jConfig {
 

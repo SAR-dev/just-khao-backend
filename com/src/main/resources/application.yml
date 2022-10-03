@@ -12,7 +12,7 @@ spring:
         database: movie-graph
     postgres:
       hikari:
-        jdbc-url: jdbc:postgresql://localhost:5432/fmh?currentSchema=public
+        jdbc-url: jdbc:postgresql://localhost:5432/just-khao?currentSchema=public
         username: postgres
         password: admin
         driver-class-name: org.postgresql.Driver
@@ -22,5 +22,11 @@ spring:
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
+jwt:
+  accesstoken:
+    secretkey: Dp/^po=<bbbTv&<Xg%&kL#8I3sg9|u
+    expirationtime: 300000
+  refreshtoken:
+    expirationtime: 900000
 server:
   port: ${PORT:8080}

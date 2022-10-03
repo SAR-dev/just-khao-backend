@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="just.khao.com.repository.postgres.AuthRepository">
+    <select id="findByUsernameOrEmail" resultType="just.khao.com.entity.AuthEntity">
+        SELECT * FROM auth WHERE username = #{username} OR email = #{email}
+    </select>
+
+    <insert id="createAuth">
+        INSERT INTO auth (username, email, hashed_password) VALUES (#{username,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{hashed_password})
+    </insert>
+</mapper>

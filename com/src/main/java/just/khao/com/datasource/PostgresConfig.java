@@ -17,7 +17,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @MapperScan(
-        basePackages = {"com.formalhaut.fmh.repository.postgres"},
+        basePackages = {"just.khao.com.repository.postgres"},
         sqlSessionFactoryRef = "postgresSqlSessionFactory")
 public class PostgresConfig {
 

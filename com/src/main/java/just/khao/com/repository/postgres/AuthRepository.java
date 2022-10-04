@@ -13,5 +13,7 @@ public interface AuthRepository {
 
     void createAuth(SignupModel signupModel);
 
+    void createGoogleAuth(SignupModel signupModel);
+
     Boolean updateToken(IssueTokenModel issueTokenModel);
 }

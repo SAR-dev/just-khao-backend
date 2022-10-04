@@ -19,4 +19,17 @@
         SET refresh_token = #{refresh_token, jdbcType=VARCHAR}, refreshed_at = #{refreshed_at, jdbcType=TIMESTAMP}
         WHERE id = #{id, jdbcType=INTEGER}
     </update>
+
+    <insert id="createGoogleAuth">
+        DO
+        $do$
+            BEGIN
+                IF EXISTS (SELECT username FROM auth WHERE username = '${username}') THEN
+                    INSERT INTO auth (email, verified) VALUES ('${email}', true) ON CONFLICT (email) DO UPDATE SET verified = true;
+                ELSE
+                    INSERT INTO auth (username, email, verified) VALUES ('${username}', '${email}', true) ON CONFLICT (email) DO UPDATE SET verified = true;
+                END IF;
+            END
+        $do$;
+    </insert>
 </mapper>

@@ -1,0 +1,250 @@
+{
+	"info": {
+		"_postman_id": "22c11203-6da5-4711-83af-0948ef32611a",
+		"name": "Just Khao",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7491622"
+	},
+	"item": [
+		{
+			"name": "Sign in",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyYWZpQGdtYWlsLmNvbSIsImV4cCI6MTY2NTA3ODEzOSwiaWF0IjoxNjY0Nzc4MTM5fQ.2BKXF0d7u5ms8N1YGnCmCRDSiOgq610w5sKsnDdmFWQ",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"rafi@gmail.com\",\r\n    \"password\": \"134\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth/sign-in",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"sign-in"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Google Sign in",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyYWZpQGdtYWlsLmNvbSIsImV4cCI6MTY2NTA3ODEzOSwiaWF0IjoxNjY0Nzc4MTM5fQ.2BKXF0d7u5ms8N1YGnCmCRDSiOgq610w5sKsnDdmFWQ",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"token\": \"eyJhbGciOiJSUzI1NiIsImtpZCI6ImVkMzZjMjU3YzQ3ZWJhYmI0N2I0NTY4MjhhODU4YWE1ZmNkYTEyZGQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI1NTQ5ODkxNDk3MzAtdnFicTFic2g2cHZpdWxjN2kxYWdxdnRhMnNzaW43MXIuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI1NTQ5ODkxNDk3MzAtdnFicTFic2g2cHZpdWxjN2kxYWdxdnRhMnNzaW43MXIuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTA3MzA4NzI0NDg2MzY4MTY1MjEiLCJlbWFpbCI6InNheWVkYXJyYWZpMTQyNDAzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiNlY4dGpZTDBEYUJlQW9aRHByeFBXQSIsIm5hbWUiOiJTYXIgRGV2IiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hLS9BQ05QRXU4a2cxaDNlc3R2LTM2R1ZkTDBnVUhtVFlWa1ZCdml1eVpCdXNZV05nPXM5Ni1jIiwiZ2l2ZW5fbmFtZSI6IlNhciIsImZhbWlseV9uYW1lIjoiRGV2IiwibG9jYWxlIjoiZW4iLCJpYXQiOjE2NjQ4NDc1MjksImV4cCI6MTY2NDg1MTEyOX0.ItLc2PWM0ltMsaXcV3jK8GsaYlpGduHgHuNZMR3pozUbparhhpyoTW9amseJsm0zyiL3sHhExwRjiogoNrdSqYjZkMLUCG3NfzWj0_W3_kduGzoeOfmaIHsZ-1QMoggTfVjt8ttbPRl1giUPLCf1G7io0zm2vfwTjkMFiyEXvkos_-Ywsz_gKkxpkFts4jM5KpcA-HC-y7lGXJb9ch_jKOpdJmuQR2USAzJumIARssErSYsKhAD-NrL3A8yo1Wa9shSfp6rz3rxvrM8Tr1v7ajgVVX7l-38iyiy8lxxVNdcEEymRQ5QbEcpvGG2ZKUtisSO7mbD2G6EVJR4XEesaVA\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth/google",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"google"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sign up",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyYWZpQGdtYWlsLmNvbSIsImV4cCI6MTY2NTA3ODEzOSwiaWF0IjoxNjY0Nzc4MTM5fQ.2BKXF0d7u5ms8N1YGnCmCRDSiOgq610w5sKsnDdmFWQ",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"rafi\",\r\n    \"email\": \"rafi@gmail.com\",\r\n    \"password\": \"134\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth/sign-up",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"sign-up"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh Token",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyYWZpQGdtYWlsLmNvbSIsImV4cCI6MTY2NTA3ODEzOSwiaWF0IjoxNjY0Nzc4MTM5fQ.2BKXF0d7u5ms8N1YGnCmCRDSiOgq610w5sKsnDdmFWQ",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n        \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyYWZpQGdtYWlsLmNvbSIsImV4cCI6MTY2NTA4MTc1OCwiaWF0IjoxNjY0NzgxNzU4fQ.7P_4eluuQiC5IIoH_mO0z87YY7ynOUiVsNxTqWknDWM\",\r\n        \"refresh_token\": \"$2a$10$TPM8mniRZQCOdPre3KZkUuwHn7GE75/J8JZcipcSImiaubUsE3o.2\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth/refresh-token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"refresh-token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test Profile",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyYWZpQGdtYWlsLmNvbSIsImV4cCI6MTY2NTE0MDkxNCwiaWF0IjoxNjY0ODQwOTE0fQ.vlXm25j_lE1GI87sAR04lNc0DkFnSMYE6TSqcEneHqU",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"sayedarrafi\",\r\n    \"password\": \"134\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/profile/test",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"profile",
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Google Token Retrive",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "useBrowser",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "scope",
+							"value": "openid profile email",
+							"type": "string"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "https://www.getpostman.com/oauth2/callback",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "https://oauth2.googleapis.com/token",
+							"type": "string"
+						},
+						{
+							"key": "authUrl",
+							"value": "https://accounts.google.com/o/oauth2/auth",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "554989149730-vqbq1bsh6pviulc7i1agqvta2ssin71r.apps.googleusercontent.com",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "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",
+							"type": "string"
+						},
+						{
+							"key": "tokenName",
+							"value": "Google",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}

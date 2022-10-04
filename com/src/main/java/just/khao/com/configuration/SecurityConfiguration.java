@@ -24,16 +24,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http.cors().and().csrf().disable()
+                .authorizeHttpRequests()
                 .antMatchers("/auth/**").permitAll()
-                .antMatchers("/**").fullyAuthenticated()
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .oauth2ResourceServer().jwt()
-                .and()
-                .and()
-                .cors().and().csrf().disable();
+                .antMatchers("/**").authenticated()
+                .anyRequest()
+                .authenticated();
         http.addFilterBefore(jwtAuthConfiguration, UsernamePasswordAuthenticationFilter.class);
     }
 

@@ -1,14 +1,13 @@
 package just.khao.com.controller;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import just.khao.com.entity.AuthEntity;
-import just.khao.com.model.ResponseMessage;
-import just.khao.com.model.SigninModel;
-import just.khao.com.model.SignupModel;
-import just.khao.com.model.TokenModel;
+import just.khao.com.model.*;
 import just.khao.com.service.AuthService;
 import org.springframework.web.bind.annotation.*;
 
-import javax.security.sasl.AuthenticationException;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 
 @RestController
 @RequestMapping("/auth")
@@ -65,6 +64,19 @@ public class AuthController {
     public ResponseMessage RefreshToken(@RequestBody TokenModel tokenModel) {
         ResponseMessage responseMessage = new ResponseMessage();
         responseMessage.setData(authService.reIssueToken(tokenModel));
+        return responseMessage;
+    }
+
+    @PostMapping("/google")
+    public ResponseMessage GoogleSignIn(@RequestBody GoogleSigninModel googleSigninModel) {
+        GoogleIdToken googleIdToken = authService.extractGooleToken(googleSigninModel.getToken());
+        ResponseMessage responseMessage = new ResponseMessage();
+        if(googleIdToken != null){
+            responseMessage.setData(authService.decodeOAuthGooleToken(googleIdToken));
+        } else {
+            responseMessage.setStatus(500);
+            responseMessage.setMessage("Invalid Google Account!");
+        }
         return responseMessage;
     }
 }

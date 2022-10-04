@@ -10,6 +10,7 @@ public class AuthEntity {
     private long id;
     private String username;
     private String email;
+    private Boolean verified;
     private String hashed_password;
     private String refresh_token;
     private Instant refreshed_at;

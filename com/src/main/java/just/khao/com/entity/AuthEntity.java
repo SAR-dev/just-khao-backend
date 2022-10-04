@@ -7,7 +7,7 @@ import java.time.Instant;
 
 @Data
 public class AuthEntity {
-    private long id;
+    private int id;
     private String username;
     private String email;
     private Boolean verified;

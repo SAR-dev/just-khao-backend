@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="just.khao.com.repository.postgres.ProfileRepository">
+    <insert id="createProfile">
+        INSERT INTO profile
+        (
+        issuer,
+        issuer_user_id,
+        first_name,
+        last_name,
+        full_name,
+        avatar,
+        contact_email,
+        email_verified,
+        auth_id
+        )
+        VALUES
+        (
+        #{issuer,jdbcType=VARCHAR},
+        #{issuer_user_id,jdbcType=VARCHAR},
+        #{first_name, jdbcType=VARCHAR},
+        #{last_name, jdbcType=VARCHAR},
+        #{full_name, jdbcType=VARCHAR},
+        #{avatar, jdbcType=VARCHAR},
+        #{contact_email, jdbcType=VARCHAR},
+        #{email_verified, jdbcType=BOOLEAN},
+        #{auth_id, jdbcType=INTEGER}
+        )
+        ON CONFLICT (auth_id) DO NOTHING;
+    </insert>
+</mapper>

@@ -5,8 +5,6 @@ import just.khao.com.model.IssueTokenModel;
 import just.khao.com.model.SignupModel;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.Optional;
-
 @Mapper
 public interface AuthRepository {
     AuthEntity findByUsernameOrEmail(String username, String email);

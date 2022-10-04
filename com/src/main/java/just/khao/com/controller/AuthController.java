@@ -4,18 +4,17 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import just.khao.com.entity.AuthEntity;
 import just.khao.com.model.*;
 import just.khao.com.service.AuthService;
+import just.khao.com.service.ProfileService;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
     private final AuthService authService;
-
-    public AuthController(AuthService authService) {
+    private final ProfileService profileService;
+    public AuthController(AuthService authService, ProfileService profileService) {
         this.authService = authService;
+        this.profileService = profileService;
     }
 
     @GetMapping("/test")
@@ -72,7 +71,9 @@ public class AuthController {
         GoogleIdToken googleIdToken = authService.extractGooleToken(googleSigninModel.getToken());
         ResponseMessage responseMessage = new ResponseMessage();
         if(googleIdToken != null){
-            responseMessage.setData(authService.decodeOAuthGooleToken(googleIdToken));
+            TokenModel tokenModel = authService.createTokenFromGoogle(googleIdToken);
+            profileService.createProfileFromGoogle(googleIdToken);
+            responseMessage.setData(tokenModel);
         } else {
             responseMessage.setStatus(500);
             responseMessage.setMessage("Invalid Google Account!");

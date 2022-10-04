@@ -34,6 +34,7 @@ CREATE TABLE "public".profile (
 	created_at           timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL  ,
 	updated_at           timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL  ,
 	CONSTRAINT pk_profile PRIMARY KEY ( id ),
+	CONSTRAINT unq_profile_auth_id UNIQUE ( auth_id ) ,
 	CONSTRAINT fk_profile_auth FOREIGN KEY ( auth_id ) REFERENCES "public".auth( id )   ,
 	CONSTRAINT check_contact_email CHECK (contact_email ~* '^[A-Za-z0-9._+%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$')
  );

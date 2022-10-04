@@ -1,7 +1,17 @@
 version: '3'
+
+networks:
+  justkhao:
+    name: justkhao-networks
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.0.0/16
+          gateway: 172.20.0.1
+
 services:
   neo4j:
-    container_name: just-khao
     image: neo4j
     ports:
       - 7474:7474
@@ -12,6 +22,9 @@ services:
       - neo4j-conf:/conf
     environment:
       - NEO4J_AUTH=neo4j/123456
+    networks:
+      justkhao:
+        ipv4_address: 172.20.0.2
       
   postgres:
     image: postgres
@@ -24,6 +37,9 @@ services:
       - "5432:5432"
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      justkhao:
+        ipv4_address: 172.20.0.3
 
   pgadmin:
     image: dpage/pgadmin4
@@ -34,6 +50,9 @@ services:
       - "16543:80"
     depends_on:
       - postgres
+    networks:
+      justkhao:
+        ipv4_address: 172.20.0.4
 
 volumes:
   neo4j-data:

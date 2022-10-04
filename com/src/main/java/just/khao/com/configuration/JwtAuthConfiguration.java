@@ -50,7 +50,7 @@ public class JwtAuthConfiguration extends OncePerRequestFilter {
             authEntity = authService.findByUsernameOrEmail("", email);
         }
 
-        if (email != null && !expired && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (email != null && !expired && authEntity != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = new User(
                     authEntity.getEmail(),
                     authEntity.getHashed_password(),

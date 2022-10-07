@@ -47,7 +47,7 @@ public class JwtAuthConfiguration extends OncePerRequestFilter {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256(accessTokenSecret)).build();
             email = verifier.verify(access_token).getSubject();
             expired = verifier.verify(access_token).getExpiresAt().before(new Date());
-            authEntity = authService.findByUsernameOrEmail("", email);
+            authEntity = authService.findByEmail(email);
         }
 
         if (email != null && !expired && authEntity != null && SecurityContextHolder.getContext().getAuthentication() == null) {

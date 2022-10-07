@@ -30,4 +30,12 @@
         )
         ON CONFLICT (auth_id) DO NOTHING;
     </insert>
+
+    <select id="findByEmail" resultType="just.khao.com.entity.ProfileEntity">
+        SELECT * FROM profile WHERE auth_id=(SELECT id FROM auth WHERE email=#{email,jdbcType=VARCHAR })
+    </select>
+
+    <select id="findByUsername" resultType="just.khao.com.entity.ProfileEntity">
+        SELECT * FROM profile WHERE auth_id=(SELECT id FROM auth WHERE username=#{username,jdbcType=VARCHAR })
+    </select>
 </mapper>

@@ -27,7 +27,6 @@ public class AuthController {
         ResponseMessage responseMessage = new ResponseMessage();
         try{
             authService.createAuth(signupModel);
-            responseMessage.setStatus(200);
             responseMessage.setMessage("User Created");
         } catch(Exception e){
             responseMessage.setStatus(500);
@@ -38,12 +37,12 @@ public class AuthController {
 
     @PostMapping("/sign-in")
     public ResponseMessage SignIn(@RequestBody SigninModel signinModel) {
+        ResponseMessage responseMessage = new ResponseMessage();
         AuthEntity authEntity = authService.findByUsernameOrEmail(
                 signinModel.getUsername(),
                 signinModel.getEmail()
         );
         Boolean isAuthenticated = false;
-        ResponseMessage responseMessage = new ResponseMessage();
         if(authEntity != null){
             isAuthenticated = authService.verifyPassword(
                     signinModel.getPassword(),

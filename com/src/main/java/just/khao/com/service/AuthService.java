@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import just.khao.com.entity.AuthEntity;
+import just.khao.com.entity.ProfileEntity;
 import just.khao.com.model.IssueTokenModel;
 import just.khao.com.model.SignupModel;
 import just.khao.com.model.TokenModel;
@@ -47,19 +48,33 @@ public class AuthService {
 
     private final AuthRepository authRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ProfileRepository profileRepository;
 
-    public AuthService(AuthRepository authRepository, ProfileRepository profileRepository, @Lazy PasswordEncoder passwordEncoder) {
+    public AuthService(AuthRepository authRepository, ProfileRepository profileRepository, @Lazy PasswordEncoder passwordEncoder, ProfileRepository profileRepository1) {
         this.authRepository = authRepository;
         this.passwordEncoder = passwordEncoder;
+        this.profileRepository = profileRepository1;
     }
 
     public AuthEntity findByUsernameOrEmail(String username, String email){
         return authRepository.findByUsernameOrEmail(username, email);
     }
 
+    public AuthEntity findByEmail(String email){
+        return authRepository.findByEmail(email);
+    }
+
     public void createAuth(SignupModel signupModel){
         signupModel.setHashed_password(passwordEncoder.encode(signupModel.getPassword()));
         authRepository.createAuth(signupModel);
+        AuthEntity authEntity = authRepository.findByEmail(signupModel.getEmail());
+
+        ProfileEntity profileEntity = new ProfileEntity();
+        profileEntity.setAuth_id(authEntity.getId());
+        profileEntity.setIssuer("NATIVE");
+        profileEntity.setContact_email(authEntity.getEmail());
+
+        profileRepository.createProfile(profileEntity);
     }
 
     public void createGoogleAuth(SignupModel signupModel){
@@ -115,7 +130,7 @@ public class AuthService {
     public TokenModel reIssueToken(TokenModel tokenModel){
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(accessTokenSecret)).build();
         String email = verifier.verify(tokenModel.getAccess_token()).getSubject();
-        AuthEntity authEntity = findByUsernameOrEmail("", email);
+        AuthEntity authEntity = findByEmail(email);
 
         TokenModel newToken = new TokenModel();
         if(verifyRefreshToken(tokenModel ,authEntity)){
@@ -144,7 +159,7 @@ public class AuthService {
 
         SignupModel signupModel = new SignupModel();
         signupModel.setEmail(payload.getEmail());
-        signupModel.setUsername((String) payload.get("family_name") + '.' + (String) payload.get("given_name"));
+        signupModel.setUsername((String) payload.get("family_name") + '.' + payload.get("given_name"));
 
         createGoogleAuth(signupModel);
     }
@@ -152,7 +167,7 @@ public class AuthService {
     public TokenModel createTokenFromGoogle(GoogleIdToken googleIdToken){
         createAuthFromGoogle(googleIdToken);
         Payload payload = googleIdToken.getPayload();
-        AuthEntity authEntity = findByUsernameOrEmail("", payload.getEmail());
+        AuthEntity authEntity = findByEmail(payload.getEmail());
         TokenModel tokenModel = getNewToken(authEntity);
         return tokenModel;
     }

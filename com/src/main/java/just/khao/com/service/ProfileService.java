@@ -19,10 +19,18 @@ public class ProfileService {
         this.authRepository = authRepository;
     }
 
+    public ProfileEntity findByEmail(String email){
+        return profileRepository.findByEmail(email);
+    }
+
+    public ProfileEntity findByUsername(String username){
+        return profileRepository.findByUsername(username);
+    }
+
     public void createProfileFromGoogle(GoogleIdToken googleIdToken){
         GoogleIdToken.Payload payload = googleIdToken.getPayload();
 
-        AuthEntity authEntity = authRepository.findByUsernameOrEmail("", payload.getEmail());
+        AuthEntity authEntity = authRepository.findByEmail(payload.getEmail());
 
         ProfileEntity profileEntity = new ProfileEntity();
         profileEntity.setAuth_id(authEntity.getId());

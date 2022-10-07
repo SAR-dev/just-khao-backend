@@ -9,6 +9,8 @@ import org.apache.ibatis.annotations.Mapper;
 public interface AuthRepository {
     AuthEntity findByUsernameOrEmail(String username, String email);
 
+    AuthEntity findByEmail(String email);
+
     void createAuth(SignupModel signupModel);
 
     void createGoogleAuth(SignupModel signupModel);

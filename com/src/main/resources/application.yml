@@ -3,13 +3,6 @@ spring:
     init:
       mode: always
   datasource:
-    neo4j:
-      hikari:
-        jdbc-url: jdbc:neo4j:bolt://localhost:7687
-        username: neo4j
-        password: 123456
-        driver-class-name: org.neo4j.jdbc.bolt.BoltDriver
-        database: neo4j
     postgres:
       hikari:
         jdbc-url: jdbc:postgresql://localhost:5432/postgres?currentSchema=public

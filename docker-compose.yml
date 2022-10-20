@@ -11,21 +11,6 @@ networks:
           gateway: 172.20.0.1
 
 services:
-  neo4j:
-    image: neo4j
-    ports:
-      - 7474:7474
-      - 7687:7687
-    volumes:
-      - neo4j-data:/data
-      - neo4j-logs:/logs
-      - neo4j-conf:/conf
-    environment:
-      - NEO4J_AUTH=neo4j/123456
-    networks:
-      justkhao:
-        ipv4_address: 172.20.0.2
-      
   postgres:
     image: postgres
     restart: always

@@ -49,6 +49,7 @@ CREATE TABLE "public".profile (
 	images               varchar(100)[]    ,
 	video                varchar(100)    ,
 	mentions             integer[]      ,
+	info                 jsonb  ,
 	created_at           timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL  ,
 	updated_at           timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL  ,
 	CONSTRAINT pk_post PRIMARY KEY ( id ),

@@ -44,8 +44,8 @@ CREATE TABLE "public".profile (
 
  CREATE TABLE "public".post (
     id                   integer DEFAULT nextval('post_id_seq'::regclass) NOT NULL  ,
-    auth_id              integer    ,
-	content              varchar(1000)    ,
+    auth_id              integer NOT NULL    ,
+	content              varchar(1000) NOT NULL    ,
 	images               varchar(100)[]    ,
 	video                varchar(100)    ,
 	mentions             integer[]      ,
@@ -57,22 +57,24 @@ CREATE TABLE "public".profile (
 
   CREATE TABLE "public".reaction (
     id                   integer DEFAULT nextval('reaction_id_seq'::regclass) NOT NULL  ,
-	name                 varchar(10)    ,
-	shorthand            varchar(10)    ,
+	name                 varchar(10) NOT NULL    ,
+	shorthand            varchar(10) NOT NULL    ,
 	value                varchar(10)    ,
 	source               varchar(100)    ,
 	type                 varchar(10) DEFAULT 'FREE' CHECK (status IN ( 'FREE', 'PREMIUM' ))   ,
 	created_at           timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL  ,
 	updated_at           timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL  ,
 	CONSTRAINT pk_reaction PRIMARY KEY ( id ),
+	CONSTRAINT unq_reaction_name UNIQUE ( name ) ,
+	CONSTRAINT unq_reaction_shorthand UNIQUE ( shorthand ) ,
 	CONSTRAINT fk_reaction_auth FOREIGN KEY ( auth_id ) REFERENCES "public".auth( id )
  );
 
  CREATE TABLE "public".post_reaction (
     id                   integer DEFAULT nextval('post_reaction_id_seq'::regclass) NOT NULL  ,
-	post_id              integer    ,
-	reaction_id          integer    ,
-	auth_id              integer    ,
+	post_id              integer NOT NULL    ,
+	reaction_id          integer NOT NULL    ,
+	auth_id              integer NOT NULL    ,
 	created_at           timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL  ,
 	updated_at           timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL  ,
 	CONSTRAINT pk_reaction PRIMARY KEY ( id ),
@@ -81,6 +83,13 @@ CREATE TABLE "public".profile (
 	CONSTRAINT fk_post_reaction_auth FOREIGN KEY ( auth_id ) REFERENCES "public".auth( id )  ,
 	CONSTRAINT unq_reaction_auth_post UNIQUE ( post_id, reaction_id, auth_id )
  );
+
+--Shop
+--Shop Members
+--Comment - upvote array of auth
+--Reply - upvote array of auth
+--Review - post_id, shop_id
+
 
 --Update Function
 

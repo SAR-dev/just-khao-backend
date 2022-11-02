@@ -85,12 +85,12 @@ CREATE TABLE "public".profile (
 	CONSTRAINT unq_reaction_auth_post UNIQUE ( post_id, reaction_id, auth_id )
  );
 
---Shop
+--Shop - facility jsonb
 --Shop Members
 --Comment - upvote array of auth
 --Reply - upvote array of auth
 --Review - post_id, shop_id
-
+--Location
 
 --Update Function
 

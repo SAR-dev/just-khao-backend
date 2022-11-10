@@ -4,6 +4,7 @@ CREATE SEQUENCE "public".profile_id_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE "public".post_id_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE "public".reaction_id_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE "public".post_reaction_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE "public".comment_reaction_id_seq START WITH 1 INCREMENT BY 1;
 
 --Tables
 CREATE TABLE "public".auth (
@@ -85,6 +86,19 @@ CREATE TABLE "public".profile (
 	CONSTRAINT unq_reaction_auth_post UNIQUE ( post_id, reaction_id, auth_id )
  );
 
+  CREATE TABLE "public".comment (
+    id                   integer DEFAULT nextval('comment_id_seq'::regclass) NOT NULL  ,
+    auth_id              integer NOT NULL    ,
+    post_id              integer NOT NULL   ,
+	content              varchar(1000) NOT NULL    ,
+	images               varchar(100)[]    ,
+	created_at           timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL  ,
+	updated_at           timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL  ,
+	CONSTRAINT pk_comment PRIMARY KEY ( id ),
+	CONSTRAINT fk_comment_auth FOREIGN KEY ( auth_id ) REFERENCES "public".auth( id )  ,
+	CONSTRAINT fk_comment_post FOREIGN KEY ( post_id ) REFERENCES "public".post( id )  ,
+ );
+
 --Shop - facility jsonb
 --Shop Members
 --Comment - upvote array of auth
@@ -110,3 +124,4 @@ CREATE TRIGGER update_updated_at_profile BEFORE UPDATE ON "public".profile FOR E
 CREATE TRIGGER update_updated_at_post BEFORE UPDATE ON "public".post FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 CREATE TRIGGER update_updated_at_reaction BEFORE UPDATE ON "public".reaction FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 CREATE TRIGGER update_updated_at_post_reaction BEFORE UPDATE ON "public".post_reaction FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+CREATE TRIGGER update_updated_at_comment BEFORE UPDATE ON "public".comment FOR EACH ROW EXECUTE FUNCTION update_updated_at();

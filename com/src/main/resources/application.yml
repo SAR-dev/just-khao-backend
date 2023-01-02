@@ -6,7 +6,7 @@ spring:
     postgres:
       hikari:
         jdbc-url: jdbc:postgresql://localhost:5432/postgres?currentSchema=public
-        username: admin
+        username: postgres
         password: admin
         driver-class-name: org.postgresql.Driver
         auto-commit: false

@@ -3,11 +3,11 @@ package just.khao.com.controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
-public class AuthController {
+@RequestMapping("/user")
+public class UserController {
 
     @GetMapping("/test")
-    public String TestAuth(){
+    public String TestUser(){
         return "Auth OK";
     }
 }

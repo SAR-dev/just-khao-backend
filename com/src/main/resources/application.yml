@@ -5,7 +5,7 @@ spring:
   datasource:
     postgres:
       hikari:
-        jdbc-url: jdbc:postgresql://localhost:5432/book_store?currentSchema=public
+        jdbc-url: jdbc:postgresql://localhost:5432/book-app?currentSchema=public
         username: postgres
         password: admin
         driver-class-name: org.postgresql.Driver
@@ -21,13 +21,5 @@ jwt:
     expirationtime: 300000
   refreshtoken:
     expirationtime: 900000
-google:
-  client_id: 554989149730-vqbq1bsh6pviulc7i1agqvta2ssin71r.apps.googleusercontent.com
-  project_id: just-khao
-  auth_uri: https://accounts.google.com/o/oauth2/auth
-  token_uri: https://oauth2.googleapis.com/token
-  auth_provider_x509_cert_url: https://www.googleapis.com/oauth2/v1/certs
-  client_secret: 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
-
 server:
   port: ${PORT:8080}

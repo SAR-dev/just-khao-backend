@@ -4,4 +4,20 @@
 
 <mapper namespace="just.khao.com.repository.postgres.UserRepository">
 
+    <insert id="registerUser">
+        insert into "user" (
+            username,
+            first_name,
+            last_name,
+            email,
+            "password"
+        ) values (
+            #{username},
+            #{first_name},
+            #{last_name},
+            #{email},
+            #{password}
+        );
+    </insert>
+
 </mapper>

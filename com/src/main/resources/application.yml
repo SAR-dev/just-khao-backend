@@ -5,7 +5,7 @@ spring:
   datasource:
     postgres:
       hikari:
-        jdbc-url: jdbc:postgresql://localhost:5432/book-app?currentSchema=public
+        jdbc-url: jdbc:postgresql://localhost:5432/book_app?currentSchema=public
         username: postgres
         password: admin
         driver-class-name: org.postgresql.Driver

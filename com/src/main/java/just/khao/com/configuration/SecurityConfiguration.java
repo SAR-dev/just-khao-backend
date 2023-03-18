@@ -19,19 +19,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    @Autowired
-    JwtAuthConfiguration jwtAuthConfiguration;
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .authorizeHttpRequests()
-//                .antMatchers("/auth/**").permitAll()
-//                .antMatchers("/**").authenticated()
                 .antMatchers("/**").permitAll()
                 .anyRequest()
                 .authenticated();
-        http.addFilterBefore(jwtAuthConfiguration, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean

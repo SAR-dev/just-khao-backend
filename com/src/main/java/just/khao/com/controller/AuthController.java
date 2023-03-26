@@ -1,11 +1,13 @@
 package just.khao.com.controller;
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import just.khao.com.entity.AuthEntity;
+import just.khao.com.entity.GoogleToken;
 import just.khao.com.model.*;
 import just.khao.com.service.AuthService;
 import just.khao.com.service.ProfileService;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/auth")
@@ -66,8 +68,8 @@ public class AuthController {
     }
 
     @PostMapping("/google")
-    public ResponseMessage GoogleSignIn(@RequestBody GoogleSigninModel googleSigninModel) {
-        GoogleIdToken googleIdToken = authService.extractGooleToken(googleSigninModel.getToken());
+    public ResponseMessage GoogleSignIn(@RequestBody GoogleSigninModel googleSigninModel) throws IOException, InterruptedException {
+        GoogleToken googleIdToken = authService.extractGooleToken(googleSigninModel.getToken());
         ResponseMessage responseMessage = new ResponseMessage();
         if(googleIdToken != null){
             TokenModel tokenModel = authService.createTokenFromGoogle(googleIdToken);

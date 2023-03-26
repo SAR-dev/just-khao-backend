@@ -3,10 +3,11 @@ package just.khao.com.service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.gson.GsonFactory;
+import com.google.gson.Gson;
 import just.khao.com.entity.AuthEntity;
+import just.khao.com.entity.GoogleToken;
 import just.khao.com.entity.ProfileEntity;
+import just.khao.com.helpers.Converter;
 import just.khao.com.model.IssueTokenModel;
 import just.khao.com.model.SignupModel;
 import just.khao.com.model.TokenModel;
@@ -20,15 +21,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.security.GeneralSecurityException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Collections;
 import java.util.Date;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -50,10 +50,13 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final ProfileRepository profileRepository;
 
-    public AuthService(AuthRepository authRepository, ProfileRepository profileRepository, @Lazy PasswordEncoder passwordEncoder, ProfileRepository profileRepository1) {
+    private final Converter converter;
+
+    public AuthService(AuthRepository authRepository, ProfileRepository profileRepository, @Lazy PasswordEncoder passwordEncoder, ProfileRepository profileRepository1, Converter converter) {
         this.authRepository = authRepository;
         this.passwordEncoder = passwordEncoder;
         this.profileRepository = profileRepository1;
+        this.converter = converter;
     }
 
     public AuthEntity findByUsernameOrEmail(String username, String email){
@@ -139,35 +142,33 @@ public class AuthService {
         return newToken;
     }
 
-    public GoogleIdToken extractGooleToken(String token){
-        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
-                .setAudience(Collections.singletonList(client_id))
+    public GoogleToken extractGooleToken(String token) throws IOException, InterruptedException {
+        String accessToken = token;
+        String endpoint = "https://www.googleapis.com/oauth2/v3/userinfo";
+        String authorizationHeader = "Bearer " + accessToken;
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(endpoint))
+                .header("Authorization", authorizationHeader)
                 .build();
-        GoogleIdToken googleIdToken;
-        try {
-            googleIdToken = verifier.verify(token);
-        } catch (GeneralSecurityException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return googleIdToken;
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        String responseBody = response.body();
+        GoogleToken googleToken = new Gson().fromJson(responseBody, GoogleToken.class);
+        return googleToken;
     }
 
-    public void createAuthFromGoogle(GoogleIdToken googleIdToken){
-        Payload payload = googleIdToken.getPayload();
-
+    public void createAuthFromGoogle(GoogleToken googleToken){
         SignupModel signupModel = new SignupModel();
-        signupModel.setEmail(payload.getEmail());
-        signupModel.setUsername((String) payload.get("family_name") + '.' + payload.get("given_name"));
-
+        signupModel.setEmail(googleToken.getEmail());
+        signupModel.setUsername(converter.convertToAlphanumericWithUnderscore((googleToken.getFamily_name() + '.' + googleToken.getGiven_name())));
         createGoogleAuth(signupModel);
     }
 
-    public TokenModel createTokenFromGoogle(GoogleIdToken googleIdToken){
-        createAuthFromGoogle(googleIdToken);
-        Payload payload = googleIdToken.getPayload();
-        AuthEntity authEntity = findByEmail(payload.getEmail());
+    public TokenModel createTokenFromGoogle(GoogleToken googleToken){
+        createAuthFromGoogle(googleToken);
+        AuthEntity authEntity = findByEmail(googleToken.getEmail());
         TokenModel tokenModel = getNewToken(authEntity);
         return tokenModel;
     }

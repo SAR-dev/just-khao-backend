@@ -1,7 +1,7 @@
 package just.khao.com.service;
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import just.khao.com.entity.AuthEntity;
+import just.khao.com.entity.GoogleToken;
 import just.khao.com.entity.ProfileEntity;
 import just.khao.com.repository.postgres.AuthRepository;
 import just.khao.com.repository.postgres.ProfileRepository;
@@ -27,21 +27,19 @@ public class ProfileService {
         return profileRepository.findByUsername(username);
     }
 
-    public void createProfileFromGoogle(GoogleIdToken googleIdToken){
-        GoogleIdToken.Payload payload = googleIdToken.getPayload();
-
-        AuthEntity authEntity = authRepository.findByEmail(payload.getEmail());
+    public void createProfileFromGoogle(GoogleToken googleToken){
+        AuthEntity authEntity = authRepository.findByEmail(googleToken.getEmail());
 
         ProfileEntity profileEntity = new ProfileEntity();
         profileEntity.setAuth_id(authEntity.getId());
         profileEntity.setIssuer("GOOGLE");
-        profileEntity.setIssuer_user_id(payload.getSubject());
-        profileEntity.setContact_email(payload.getEmail());
-        profileEntity.setEmail_verified(Boolean.valueOf(payload.getEmailVerified()));
-        profileEntity.setFull_name((String) payload.get("name"));
-        profileEntity.setAvatar((String) payload.get("picture"));
-        profileEntity.setFirst_name((String) payload.get("family_name"));
-        profileEntity.setLast_name((String) payload.get("given_name"));
+        profileEntity.setIssuer_user_id(googleToken.getSub());
+        profileEntity.setContact_email(googleToken.getEmail());
+        profileEntity.setEmail_verified(googleToken.isEmail_verified());
+        profileEntity.setFull_name(googleToken.getName());
+        profileEntity.setAvatar(googleToken.getPicture());
+        profileEntity.setFirst_name(googleToken.getFamily_name());
+        profileEntity.setLast_name(googleToken.getGiven_name());
 
         profileRepository.createProfile(profileEntity);
     }

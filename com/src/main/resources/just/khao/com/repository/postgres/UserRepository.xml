@@ -20,4 +20,11 @@
         );
     </insert>
 
+    <select id="signInByEmailAndPassword" resultType="just.khao.com.entity.UserEntity">
+        select * from "user"
+        where
+        email = #{email} and
+        "password" = #{password}
+    </select>
+
 </mapper>

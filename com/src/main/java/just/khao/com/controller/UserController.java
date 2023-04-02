@@ -35,11 +35,6 @@ public class UserController {
         } else {
             return userEntity;
         }
-
-
-//        1. Check if user exists in database with given email and password
-//        2. If exists then return the user object without password
-//        3. If doesn't exist the return error
     }
 
 }

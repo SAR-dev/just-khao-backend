@@ -5,9 +5,15 @@ spring:
   datasource:
     postgres:
       hikari:
+<<<<<<< Updated upstream
         jdbc-url: jdbc:postgresql://localhost:5432/postgres?currentSchema=public
         username: admin
         password: admin
+=======
+        jdbc-url: jdbc:postgresql://localhost:5432/book_app?currentSchema=public
+        username: postgres
+        password: password
+>>>>>>> Stashed changes
         driver-class-name: org.postgresql.Driver
         auto-commit: false
         minimum-idle: 10

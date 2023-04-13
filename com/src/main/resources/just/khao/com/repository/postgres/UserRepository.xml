@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="just.khao.com.repository.postgres.UserRepository">
+
+    <insert id="registerUser">
+        insert into "user" (
+            username,
+            first_name,
+            last_name,
+            email,
+            "password"
+        ) values (
+            #{username},
+            #{first_name},
+            #{last_name},
+            #{email},
+            #{password}
+        );
+    </insert>
+
+    <select id="getUserByName" resultType="just.khao.com.entity.User.UserEntity">
+        select *
+        from "user" _u
+        where _u.username = #{username}
+    </select>
+
+</mapper>

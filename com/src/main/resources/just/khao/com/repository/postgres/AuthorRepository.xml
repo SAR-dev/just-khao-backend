@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="just.khao.com.repository.postgres.AuthorRepository">
+    <insert id="registerAuthor">
+        insert into author (
+            writer_name,
+            intro,
+            about_me,
+            user_id
+        ) values (
+            #{writer_name},
+            #{intro},
+            #{about_me},
+            #{user_id}
+        )
+    </insert>
+</mapper>

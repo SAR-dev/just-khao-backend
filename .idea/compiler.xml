@@ -10,13 +10,10 @@
         <module name="com" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="com" target="17" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="com" options="-parameters" />
+      <module name="com" options="" />
     </option>
   </component>
 </project>
